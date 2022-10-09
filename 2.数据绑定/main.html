@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>FirstVue</title>
+		<!-- 引入vue -->
+		<script type="text/javascript" src="../js/vue.js"></script>
+	</head>
+
+	<body>
+		<div id="root">
+			<h1>HelloWorld, {{name}}</h1>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		Vue.config.productionTip = false
+
+		const vm = new Vue({
+			// el: '#root', // 初始化时立刻挂载
+			// 对象式data
+			// data: {
+			//     name: 'Vue'
+			// }
+			// 函数式data 此处不能使用lambda
+			data: function() {
+				return {
+					name: 'Vue'
+				}
+			}
+		})
+		console.log(vm)
+
+		setTimeout(() => {
+			vm.$mount('#root') // 延迟挂载
+		}, 1000);
+	</script>
+
+</html>

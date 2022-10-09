@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>FirstVue</title>
+		<!-- 引入vue -->
+		<script type="text/javascript" src="../js/vue.js"></script>
+	</head>
+
+	<body>
+		<div id="root">
+			<!-- 
+            插值语法用于解析标签体内容
+            指令语法能用于解析标签体
+        -->
+			<h1>HelloWorld, {{name}}</h1> <!-- 模板语法-插值语法{{}} -->
+			<hr />
+			<a hreflang="zh" v-bind:href="neturl.url">双叶一下 你就知道</a><br /><!-- 模板语法-指令语法 -->
+			<!--
+			v-bind 可以简写为:
+			v-bind:会将引号的内容当作JS表达式执行
+		-->
+			<a hreflang="zh" :href="neturl.url" :x="neturl.name">双叶一下 你就知道</a><br />
+
+			<!-- 
+			v-bind 单向数据绑定 不会影响data中的值
+			v-model 双向数据绑定 会影响data中的值
+            v-model:value只能在表单类input、select等元素中使用
+            可以简写为v-model 默认收集value值
+         -->
+			单向绑定：<input type="text" v-bind:value="age"><br />
+			双向绑定：<input type="text" v-model:value="age"><br />
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		Vue.config.productionTip = false
+
+		// 获取指定容器并解析 实例与容器为一一对应关系
+		new Vue({
+			el: '#root', // 用户指定当前Vue实例为哪个容器服务 通常为css选择器字符串
+			// el:document.getElementById('root') 如果不使用css选择器 也可以手动指定
+			// 指定容器的局部变量
+			data: {
+				name: 'Vue',
+				neturl: {
+					url: "https://www.baidu.com",
+					name: 'baidu'
+				},
+				age: '12'
+			}
+		})
+	</script>
+
+</html>

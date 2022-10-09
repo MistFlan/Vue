@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>事件处理</title>
+		<script type="text/javascript" src="../js/vue.js"></script>
+	</head>
+	<body>
+		<div id="root">
+			<h2>欢迎登录，{{name}}</h2>
+
+			<button v-on:click="ejectInfo">点击提示信息</button>
+
+			<!-- v-on:click 可以简写为@click -->
+			<button @click="ejectInfo1">点击提示信息1 无参数</button>
+			<button @click="ejectInfo2($event, 233)">点击提示信息2 有参数</button>
+		</div>
+	</body>
+
+	<script type='text/javascript'>
+		new Vue({
+			el: '#root',
+			data: {
+				name: 'Flan'
+			},
+			methods: {
+				ejectInfo() {
+					console.log('显示信息。')
+					alert('显示信息。')
+				},
+				ejectInfo1(event) {
+					console.log('显示信息1。' + event.target.innerText)
+					alert('显示信息1。' + event.target.innerText)
+				},
+				ejectInfo2(event, number) {
+					console.log('显示信息2。' + event.target.innerText + '   ' + number)
+					alert('显示信息2。' + event.target.innerText + '   ' + number)
+				}
+			}
+		})
+	</script>
+</html>
