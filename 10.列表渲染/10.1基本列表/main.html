@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>列表渲染</title>
+		<script type='text/javascript' src='../../js/vue.js'></script>
+	</head>
+	<body>
+		<div id="root">
+			<h2>欢迎登录，{{name}}</h2>
+			<!-- 遍历数组 -->
+			<ul>
+				<li v-for="(p, index) in personList" :key="p.id">
+					{{p.name}}-{{p.age}}
+				</li>
+			</ul>
+			<!-- 遍历对象 -->
+			<ul>
+				<li v-for="(value, key) in car" :key="key">
+					{{key}}-{{value}}
+				</li>
+			</ul>
+			<!-- 遍历字符串 -->
+			<ul>
+				<li v-for="(char, index) in str" :key="index">
+					{{index}}-{{char}}
+				</li>
+			</ul>
+			<!-- 遍历指定次数 -->
+			<ul>
+				<li v-for="(i, index) in 5" :key="index">
+					{{index}}-{{i}}
+				</li>
+			</ul>
+		</div>
+	</body>
+
+	<script type='text/javascript'>
+		new Vue({
+			el: '#root',
+			data: {
+				name: 'Flan',
+				personList: [{
+					id: '1',
+					name: '张三',
+					age: 18
+				}, {
+					id: '2',
+					name: '李四',
+					age: 20
+				}, {
+					id: '3',
+					name: '王五',
+					age: 21
+				}],
+				car: {
+					name: '奥迪',
+					price: 700000,
+					color: '黑色'
+				},
+				str: 'Hello'
+			},
+			methods: {
+
+			}
+		})
+	</script>
+</html>

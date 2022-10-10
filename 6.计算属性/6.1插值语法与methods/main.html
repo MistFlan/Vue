@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>计算属性-插值语法与methods</title>
+		<script type='text/javascript' src='../../js/vue.js'></script>
+	</head>
+	<body>
+		<div id="root">
+			<h2>欢迎登录， {{name}}</h2>
+
+			firstName：<input type="text" :value="firstName" /> <br /><br />
+			lastName：<input type="text" v-model:value="lastName" /> <br /><br />
+			<!-- fullName：<span>{{firstName + '-' + lastName}}</span> -->
+			<!-- fullName：<span>{{firstName.slice(0,1)}}-{{lastName}}</span> -->
+			fullName：<span>{{fullName()}}</span>
+		</div>
+	</body>
+
+	<script type='text/javascript'>
+		new Vue({
+			el: '#root',
+			data: {
+				name: 'Flan',
+				firstName: 'Mist',
+				lastName: 'Flan'
+			},
+			methods: {
+				fullName() {
+					return this.firstName + '-' + this.lastName
+				}
+			}
+		})
+	</script>
+</html>

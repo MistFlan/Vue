@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>姓名案例</title>
+		<script type='text/javascript' src='../../js/vue.js'></script>
+	</head>
+	<body>
+		<div id="root">
+			<h2>欢迎登录，{{name}}</h2>
+
+			firstName：<input type="text" :value="firstName" /> <br /><br />
+			lastName：<input type="text" v-model:value="lastName" /> <br /><br />
+			fullName：<span>{{fullName}}</span> <br /><br />
+			fullName：<span>{{fullName}}</span>
+		</div>
+	</body>
+
+	<script type='text/javascript'>
+		const vm = new Vue({
+			el: '#root',
+			data: {
+				name: 'Flan',
+				firstName: 'Mist',
+				lastName: 'Flan',
+				fullName: 'MistFlan'
+			},
+			methods: {
+
+			},
+			computed: {
+
+			},
+			watch: {
+				lastName(newValue, oldValue) {
+					// console.log(this)
+					// computed能完成的功能 watch都可以完成
+					// watch能完成的功能 computed不一定能完成
+					// 当存在异步任务时 computed无法实现
+					setTimeout(() => {
+						console.log(this)
+						this.fullName = this.firstName + '-' + newValue
+					}, 1000)
+
+					// 所有被Vue管理的函数 应该写成普通函数 这样this执行vm或者组件实例对象
+					// 所有不被Vue管理的函数 定时器回调函数、ajax回调函数、Promise的回调函数等 应该写成Lambda
+					setTimeout(function(){
+						console.log(this)
+						this.fullName = this.firstName + '-' + newValue
+					}, 1000)
+				}
+			}
+		})
+	</script>
+</html>

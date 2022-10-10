@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>key的原理</title>
+		<script type='text/javascript' src='../../js/vue.js'></script>
+	</head>
+	<body>
+		<div id="root">
+			<h2>欢迎登录，{{name}}</h2>
+			<!-- 遍历数组 -->
+			<!-- 
+			
+			key是虚拟DOM对象的标识 当数据发生变化时 Vue会根据 新数据 生成 新的虚拟DOM
+			之后Vue进行 新的虚拟DOM 与 旧的虚拟DOM 的差异比较
+			
+			旧的虚拟DOM中找到了与新虚拟DOM相同的key
+				如果虚拟DOM的内容没变 直接使用之前的真实DOM
+				如果虚拟DOM的内容便了 生成新的真实DOM 替换页面中之前的真实DOM
+			 
+			 如果使用index作为key的唯一标识 在数组顺序被破坏时 对比时不仅会导致效率低
+			 还会导致页面错误显示
+			 
+			 -->
+			<!--  -->
+			<!-- key默认值为index -->
+			<ul>
+				<li v-for="(p, index) in personList" :key="p.id">
+					{{p.name}}-{{p.age}}
+					<input type="text" />
+				</li>
+			</ul>
+			<button @click="add">添加赵六</button>
+		</div>
+	</body>
+
+	<script type='text/javascript'>
+		new Vue({
+			el: '#root',
+			data: {
+				name: 'Flan',
+				personList: [{
+					id: '1',
+					name: '张三',
+					age: 18
+				}, {
+					id: '2',
+					name: '李四',
+					age: 20
+				}, {
+					id: '3',
+					name: '王五',
+					age: 21
+				}]
+			},
+			methods: {
+				add() {
+					const p = {
+						id: '4',
+						name: '赵六',
+						age: 40
+					}
+					this.personList.unshift(p)
+				}
+			}
+		})
+	</script>
+</html>

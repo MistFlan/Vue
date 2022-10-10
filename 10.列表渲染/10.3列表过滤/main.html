@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>列表过滤</title>
+		<script type='text/javascript' src='../../js/vue.js'></script>
+	</head>
+	<body>
+		<div id="root">
+			<h2>欢迎登录，{{name}}</h2>
+			<!-- 遍历数组 -->
+			<input type="text" placeholder="请输入搜索" v-model="keyword" />
+			<ul>
+				<li v-for="(p, index) in filterPersonList" :key="p.id">
+					{{p.name}}-{{p.age}}
+				</li>
+			</ul>
+		</div>
+	</body>
+
+	<script type='text/javascript'>
+		// 计算属性
+		new Vue({
+			el: '#root',
+			data: {
+				name: 'Flan',
+				keyword: '',
+				personList: [{
+					id: '1',
+					name: '马冬梅',
+					age: 18,
+					sex: '女'
+				}, {
+					id: '2',
+					name: '周冬雨',
+					age: 20,
+					sex: '女'
+				}, {
+					id: '3',
+					name: '周杰伦',
+					age: 21,
+					sex: '男'
+				}, {
+					id: '4',
+					name: '温兆伦',
+					age: 21,
+					sex: '男'
+				}],
+			},
+			methods: {
+
+			},
+			computed: {
+				filterPersonList() {
+					return this.personList.filter((e) => {
+						return e.name.indexOf(this.keyword) !== -1
+					})
+				}
+			}
+		})
+
+		// 监视属性
+		// new Vue({
+		// 	el: '#root',
+		// 	data: {
+		// 		name: 'Flan',
+		// 		keyword: '',
+		// 		personList: [{
+		// 			id: '1',
+		// 			name: '马冬梅',
+		// 			age: 18,
+		// 			sex: '女'
+		// 		}, {
+		// 			id: '2',
+		// 			name: '周冬雨',
+		// 			age: 20,
+		// 			sex: '女'
+		// 		}, {
+		// 			id: '3',
+		// 			name: '周杰伦',
+		// 			age: 21,
+		// 			sex: '男'
+		// 		}, {
+		// 			id: '4',
+		// 			name: '温兆伦',
+		// 			age: 21,
+		// 			sex: '男'
+		// 		}],
+		// 		filterPersonList: []
+		// 	},
+		// 	methods: {
+
+		// 	},
+		// 	watch: {
+		// 		keyword: {
+		// 			immediate: true,
+
+		// 			handler(newValue) {
+		// 				console.log('keyword被更改了 ' + newValue)
+		// 				this.filterPersonList = this.personList.filter((e) => {
+		// 					return e.name.indexOf(newValue) !== -1
+		// 				})
+		// 			}
+		// 		}
+		// 	}
+		// })
+	</script>
+</html>

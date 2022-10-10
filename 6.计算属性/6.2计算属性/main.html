@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>计算属性</title>
+		<script type='text/javascript' src='../../js/vue.js'></script>
+	</head>
+	<body>
+		<div id="root">
+			<h2>欢迎登录，{{name}}</h2>
+
+			firstName：<input type="text" :value="firstName" /> <br /><br />
+			lastName：<input type="text" v-model:value="lastName" /> <br /><br />
+			fullName：<span>{{fullName}}</span> <br /><br />
+			fullName：<span>{{fullName}}</span>
+		</div>
+	</body>
+
+	<script type='text/javascript'>
+		const vm = new Vue({
+			el: '#root',
+			data: {
+				name: 'Flan',
+				firstName: 'Mist',
+				lastName: 'Flan'
+			},
+			methods: {
+
+			},
+			computed: {
+				fullName: {
+					// 当fullName初次被读取 以及所依赖的数据发生变化 get()就会被调用
+					// 即使多次读取fullName get()也只会被调用一次 因为有缓存
+					// this为new出来的Vue对象自己
+					get() {
+						console.log(this)
+						return this.firstName + '-' + this.lastName
+					},
+
+					// 由于fullName值是计算出来的 所以set方法无法直接修改值 只能通过修改依赖的数据来更改计算属性的值
+					set(value) {
+						this.lastName = value
+					}
+				}
+			}
+		})
+	</script>
+</html>

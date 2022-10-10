@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>计算属性简写</title>
+		<script type='text/javascript' src='../../js/vue.js'></script>
+	</head>
+	<body>
+		<div id="root">
+			<h2>欢迎登录，{{name}}</h2>
+
+			firstName：<input type="text" :value="firstName" /> <br /><br />
+			lastName：<input type="text" v-model:value="lastName" /> <br /><br />
+			fullName：<span>{{fullName}}</span> <br /><br />
+			fullName：<span>{{fullName}}</span>
+		</div>
+	</body>
+
+	<script type='text/javascript'>
+		const vm = new Vue({
+			el: '#root',
+			data: {
+				name: 'Flan',
+				firstName: 'Mist',
+				lastName: 'Flan'
+			},
+			methods: {
+
+			},
+			computed: {
+				// 只有不考虑修改计算属性才能使用简写
+				// function(){}相当于get()
+				// : function可以省略
+				fullName: function() {
+					console.log(this)
+					return this.firstName + '-' + this.lastName
+				}
+
+				// 完整写法
+				// fullName: {
+				// get() {
+				// 	console.log(this)
+				// 	return this.firstName + '-' + this.lastName
+				// },
+
+				// set(value) {
+				// 	this.lastName = value
+				// }
+				// }
+			}
+		})
+	</script>
+</html>
