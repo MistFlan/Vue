@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>标题</title>
+		<script type="text/javascript" src="../js/vue.js"></script>
+	</head>
+
+	<body>
+		<!-- 
+			生命周期
+				Vue在关键时刻调用的一些特殊名称的函数
+				生命周期函数的名称不可更改 但函数的具体内容可以根据需求编写
+				生命周期函数中的this指向Vue实例或组件实例
+		 -->
+		<div id="root">
+			<!-- 同名时可以简写:style="{opacity}" -->
+			<h1 :style="{opacity: opacity}">欢迎登录，{{name}}</h1>
+			<!-- 通过这种方法调用会造成循环调用 -->
+			<!-- {{changeShow()}} -->
+
+			<h2>数字：{{n}}</h2>
+			<button @click="add">点击更新数字</button>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		new Vue({
+			el: '#root',
+			data: {
+				name: 'Flan',
+				opacity: 1,
+				n: 1
+			},
+			methods: {
+				add() {
+					this.n++
+				}
+
+				// changeShow() {
+				// 	setInterval(() => {
+				// 		console.log("test")
+				// 		this.opacity -= 0.01
+
+				// 		if (this.opacity <= 0) {
+				// 			this.opacity = 1
+				// 		}
+				// 	}, 16)
+				// }
+			},
+			// 在初始化之后调用：生命周期、事件 但数据代理还未开始 即还没有_data 无法通过vm访问data的数据和methods的方法
+			beforeCreate() {
+				console.log('beforeCreate: ')
+				console.log(this)
+			},
+			// 初始化数据检测、数据代理后嗲用 此时可以通过vm访问data的数据和methods的方法
+			created() {
+				console.log('created: ')
+				console.log(this)
+			},
+			// 在Vue解析模板之后 生成虚拟DOM 页面此时为未解析的真实DOM 所有对DOM的操作 最终都不能奏效
+			beforeMount() {
+				console.log('created: ')
+				console.log(this)
+			},
+			// 将内存中的虚拟DOM转换为真实DOM插入页面后调用 此时显示的时经过Vue编译的DOM
+			// 对DOM的操作均有效 至此初始化完成 一般在此进行 开启定时器 发送网络请求 订阅消息 绑定自定义事件 等初始化操作
+			mounted() {
+				console.log(1)
+				setInterval(() => {
+					console.log("test")
+					this.opacity -= 0.01
+
+					if (this.opacity <= 0) {
+						this.opacity = 1
+					}
+				}, 16)
+			},
+			beforeDestory(){
+				
+			}
+		})
+
+		// 不推荐在外部实现
+		/* 		setInterval(() => {
+					vm.opacity -= 0.01
+
+					if (vm.opacity <= 0) {
+						vm.opacity = 1
+					}
+				}, 16) */
+	</script>
+</html>

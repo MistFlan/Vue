@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>标题</title>
+		<script type="text/javascript" src="../../js/vue.js"></script>
+	</head>
+
+	<body>
+		<!-- 
+			1、Vue会监视data中所有层级的数据
+			
+			2、如果监视对象中的数据（后追加的属性不能被响应）
+				通过setter实现监视 且要在创建Vue实例时就定义好
+				在创建失利后追加的属性 Vue默认不做响应式处理
+				可以使用setAPI来添加属性 使属性能被响应式处理
+				
+			3、如何监视数组中的数据（数组内部的所有元素本身不能被响应）
+				通过包裹数组更新元素的方法实现
+					调用原生对应的方法对数组进行更新
+					重新解析模板 进而更新页面
+				支持的方法如下
+					API：push pop shift unshift splice sort reverse
+					Vue.set vm.$set 此方法不能直接给vm或者vm的根数据对象data、_data添加属性
+			
+		 -->
+		<div id="root">
+			<h1>欢迎登录， {{name}}</h1>
+			<h2>组织机构名称：{{orgName}}</h2>
+			<h2>组织机构地址：{{orgAddress}}</h2>
+			<hr />
+			<button @click="addSex">点击添加性别</button>
+			<h2>姓名：{{student.name}}</h2>
+			<h2 v-if="student.sex">性别：{{student.sex}}</h2>
+			<h2>年龄：真实{{student.age.rAge}}， 虚假{{student.age.sAge}}</h2>
+			<h2>爱好：</h2>
+			<ul>
+				<li v-for="h in student.hobby">
+					<span>{{h}}</span>
+				</li>
+			</ul>
+			<h2>朋友列表</h2>
+			<ul>
+				<li v-for="(f, index) in student.friends" :key="index">
+					姓名：{{f.name}}-年龄：{{f.age}}
+				</li>
+			</ul>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		const test = new Vue({
+			el: '#root',
+			data: {
+				name: 'Flan',
+				orgName: '越南',
+				orgAddress: '亚洲',
+				student: {
+					name: 'Tom',
+					age: {
+						rAge: 18,
+						sAge: 19
+					},
+					hobby: ['摸鱼',"潜水"],
+					friends: [{
+							name: '鱼先生',
+							age: 18
+						},
+						{
+							name: '哈酱',
+							age: 180
+						}
+					]
+				}
+			},
+			methods: {
+				addSex() {
+					// Vue.set(this.student, 'sex', '男')
+					this.$set(this.student, 'sex', '男')
+				}
+			}
+		})
+
+
+		let data = {
+			orgName: '越南',
+			orgAddress: '亚洲'
+		}
+
+		// 2、创建一个监视的实例对象 用于监视data中属性的变化
+		const obs = new Observer(data)
+		console.log(obs)
+
+		// 3、准备一个vm实例对象
+		let vm = {}
+		vm._data = data = obs
+
+		// 1、创建一个监视方法
+		function Observer(obj) {
+			// 汇总对象中所有的属性值形成一个数组
+			const keys = Object.keys(obj)
+			// 遍历
+			keys.forEach(e => {
+				Object.defineProperty(this, e, {
+					get() {
+						return obj[e]
+					},
+					set(val) {
+						console.log(e + '被改了 重新解析模板')
+						obj[e] = val
+					}
+				})
+			})
+		}
+	</script>
+</html>

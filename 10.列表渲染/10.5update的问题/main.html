@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>update的问题</title>
+		<script type='text/javascript' src='../../js/vue.js'></script>
+	</head>
+	<body>
+		<div id="root">
+			<h2>欢迎登录，{{name}}</h2>
+			<button @click="updateMDM">更新马冬梅信息</button>
+			<ul>
+				<li v-for="(p, index) in personList" :key="p.id">
+					{{p.name}}-{{p.age}}
+				</li>
+			</ul>
+		</div>
+	</body>
+
+	<script type='text/javascript'>
+		// 计算属性
+		new Vue({
+			el: '#root',
+			data: {
+				name: 'Flan',
+				personList: [{
+					id: '1',
+					name: '马冬梅',
+					age: 18,
+					sex: '女'
+				}, {
+					id: '2',
+					name: '周冬雨',
+					age: 20,
+					sex: '女'
+				}, {
+					id: '3',
+					name: '周杰伦',
+					age: 21,
+					sex: '男'
+				}, {
+					id: '4',
+					name: '温兆伦',
+					age: 21,
+					sex: '男'
+				}],
+			},
+			methods: {
+				updateMDM() {
+					// 修改成功
+					// this.personList[0].name = '马老师'
+					// this.personList[0].age = 50
+					// this.personList[0].sex = '男'
+
+					// 无法修改
+					// this.personList[0] = {
+					// 	id: '1',
+					// 	name: '马老师',
+					// 	age: 50,
+					// 	sex: '男'
+					// }
+
+					// 正确写法
+					this.personList.splice(0, 1, {
+						id: '1',
+						name: '马老师',
+						age: 50,
+						sex: '男'
+					})
+				}
+			},
+			computed: {
+
+			}
+		})
+	</script>
+</html>
