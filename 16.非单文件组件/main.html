@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>标题</title>
+		<script type="text/javascript" src="../js/vue.js"></script>
+	</head>
+
+	<body>
+		<!-- 
+			1、定义组件
+				使用Vue.extend(options)创建 其中options和new VUE(options)时传入的存在区别
+					1、不能定义el属性 所有的组件都会被一个vm管理 由vm的el属性决定服务于哪个容器
+					2、data必须定义为函数式 避免组件被复用时 数据会被引用
+			2、注册组件
+				1、局部注册 new Vue的时候 定义在components属性中
+				2、全局注册 Vue.component('组件名',组件)
+			3、使用组件
+				直接使用组件名作为标签
+			
+			VueComponent:
+				1、组件本质是VueComponent的构造函数 由Vue.extend生成
+				2、在使用组件时 Vue解析时创建组件的实例对象 即new VueComponent(options)
+				3、组件中的data函数 methods函数 watch函数 computed的函数 它们的this都时VueComponent的实例对象
+				4、VueComponent的实例对象 简称vc
+				VueComponent的实例prototype属性是Vue的原型对象 -> 
+				Vue的原型对象的__proto__属性指向Vue的原型对象 而不是Object的原型对象
+				即 
+				VueComponent实例.prototype.__proto__ === Object.prototype
+				转为
+				VueComponent实例.prototype.__proto__ === Vue.prototype
+			其他
+				一般通过app管理所有组件
+			
+				const org = Vue.extend(options)可以简写为const org = options
+			
+				如果组件名由多个单词组成可以使用-连接
+				'my-org':myOrg -> <my-org></my-org>
+				
+				可以在组件中通过name属性命民组件 使VUE中显示的名称变为指定名称
+				
+				使用组件时可以使用自闭和标签 但是在html中 无法处理多个自闭和标签只能显示一个
+		 -->
+		<div id="root">
+			<h1>欢迎登录，{{name}}</h1>
+			<hr />
+
+			<!--
+ 			<org></org>
+			<hr />
+			<user></user>
+			<user></user>
+			 -->
+
+			<!-- 可以写在vm组件中  -->
+			<!-- <app></app> -->
+		</div>
+
+		<div id="root1">
+			<bye></bye>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		// 第一步：创建bye组件
+		const bye = Vue.extend({
+			template: `
+				<div>
+					<h2>再见</h2>
+				</div>
+			`,
+			data() {
+				return {
+
+				}
+			}
+		})
+
+		// 第一步：创建org组件
+		const org = Vue.extend({
+			template: `
+				<div>
+					<h2>组织名称：{{orgName}}</h2>
+					<h2>组织地址：{{orgAddress}}</h2>
+					<bye></bye>
+				</div>
+			`,
+			// el: '#root', // 组件定义时 不能指定el配置 所有组件都被一个vm管理 由vm指定服务于哪个容器
+			// 组件内data需要使用函数式定义
+			data() {
+				return {
+					orgName: 'QQ群',
+					orgAddress: '亚洲'
+				}
+			},
+			components: {
+				bye
+			}
+		})
+
+		// 第一步：创建user组件
+		const user = Vue.extend({
+			template: `
+				<div>
+					<h2>用户名称：{{userName}}</h2>
+					<h2>用户年龄：{{userAge}}</h2>
+				</div>
+			`,
+			data() {
+				return {
+					userName: '鱼先生',
+					userAge: 18
+				}
+			}
+		})
+
+		const app = Vue.extend({
+			template: `
+				<div>
+					<org></org>
+					<user></user>
+					<bye></bye>
+				</div>
+			`,
+			components: {
+				org,
+				user,
+				bye
+			}
+		})
+
+		// 第二步：全局注册
+		Vue.component('bye', bye)
+
+		// 创建vm
+		new Vue({
+			template: `<app></app>`,
+			el: '#root',
+			data: {
+				name: 'Flan'
+			},
+			// 第二步：注册组件（局部注册）
+			// components: {
+			// 	org: org,
+			// 	user
+			// }
+
+			components: {
+				app
+			}
+		})
+
+		// console.log(Vue.prototype.__proto__)
+		// console.log(Vue.__proto__)
+		console.log(org.prototype)
+		console.log(org.prototype.__proto__)
+		console.log(Object.prototype)
+
+		new Vue({
+			el: '#root1',
+			data: {
+				name: 'Flan'
+			},
+			components: {
+
+			}
+		})
+	</script>
+</html>

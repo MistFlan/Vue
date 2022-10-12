@@ -22,6 +22,8 @@
 
 			<h2>数字：{{n}}</h2>
 			<button @click="add">点击更新数字</button>
+			<button @click="destroy">点击销毁vm</button>
+			<button @click="stopChange">点击停止变换</button>
 		</div>
 	</body>
 
@@ -35,7 +37,17 @@
 			},
 			methods: {
 				add() {
+					// 即使销毁了vm实例 DOM原生的点击事件依旧会触发
+					console.log('add')
 					this.n++
+				},
+				destroy() {
+					// 大多数情况下 不应该调用自己的destroy方法
+					// 完全销毁一个实例 清理它与其他实例的连接
+					this.$destroy()
+				},
+				stopChange(){
+					this.$destroy()
 				}
 
 				// changeShow() {
@@ -61,14 +73,15 @@
 			},
 			// 在Vue解析模板之后 生成虚拟DOM 页面此时为未解析的真实DOM 所有对DOM的操作 最终都不能奏效
 			beforeMount() {
-				console.log('created: ')
+				console.log('beforeMount: ')
 				console.log(this)
 			},
 			// 将内存中的虚拟DOM转换为真实DOM插入页面后调用 此时显示的时经过Vue编译的DOM
 			// 对DOM的操作均有效 至此初始化完成 一般在此进行 开启定时器 发送网络请求 订阅消息 绑定自定义事件 等初始化操作
 			mounted() {
-				console.log(1)
-				setInterval(() => {
+				console.log('mounted: ')
+				console.log(this)
+				this.timer = setInterval(() => {
 					console.log("test")
 					this.opacity -= 0.01
 
@@ -77,8 +90,26 @@
 					}
 				}, 16)
 			},
-			beforeDestory(){
-				
+			// 此时数据是新的 页面是旧的 根据新数据 生成新的虚拟DOM然后与就的虚拟DOM进行比较 最终完成页面更新 即完成了MOdel->View的更新
+			beforeUpdate() {
+				console.log('beforeUpdate: ')
+				console.log(this)
+			},
+			// 此时数据是新的 页面也是新的
+			updated() {
+				console.log('beforeUpdate: ')
+				console.log(this)
+			},
+			// 当vm的$destory方法被调用的时候 Vue开始销毁流程
+			// 此时cm中所有的data methods 指令等 都处于可用状态 一般在此进行 关闭定时器 取消订阅消息 解绑自定义事件等
+			beforeDestroy() {
+				console.log('beforeDestory: ')
+				clearInterval(this.timer)
+				// 即使能访问数据调用方法 页面依然不会被更新
+				this.add()
+			},
+			destroyed() {
+				console.log('destroyed: ')
 			}
 		})
 
