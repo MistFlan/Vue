@@ -34,11 +34,18 @@
 				this.todoList = this.todoList.filter(todo => todo.id != id)
 				console.log("deleteTodo", this.todoList)
 			},
-			checkAllTodo(done){
+			checkAllTodo(done) {
 				this.todoList.forEach(e => e.done = done)
 			},
-			clearAllTodo(){
+			clearAllTodo() {
 				this.todoList.forEach(e => e.done = false)
+			},
+			updateTodo(id, title) {
+				this.todoList.forEach((e) => {
+					if (e.id === id) {
+						e.title = title
+					}
+				})
 			}
 		},
 		watch: {
@@ -55,8 +62,16 @@
 			todoFooter,
 			todoList
 		},
+		mounted() {
+			this.$bus.$on('updateTodoDone', this.updateTodoDone)
+			this.$bus.$on('deleteTodo', this.deleteTodo)
+			this.$bus.$on('updateTodo', this.updateTodo)
+		},
 		updated() {
 			console.log(this.todoList)
+		},
+		beforeDestroy() {
+			this.$bus.$off(['updateTodoDone', 'deleteTodo', 'updateTodo'])
 		}
 	}
 </script>
@@ -77,6 +92,13 @@
 		cursor: pointer;
 		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 		border-radius: 4px
+	}
+
+	.btn-edit {
+		color: #fff;
+		background-color: skyblue;
+		border: 1px solid rgb(87, 78, 89);
+		margin-right: 5px;
 	}
 
 	.btn-danger {

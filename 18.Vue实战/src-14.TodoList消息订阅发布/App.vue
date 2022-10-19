@@ -7,6 +7,7 @@
 </template>
 
 <script>
+	import pubsub from 'pubsub-js'
 	import todoHeader from './components/todoHeader'
 	import todoFooter from './components/todoFooter'
 	import todoList from './components/todoList'
@@ -23,21 +24,21 @@
 				console.log('接收到数据:   ' + data)
 				this.todoList.unshift(data)
 			},
-			updateTodoDone(id) {
+			updateTodoDone(_, id) {
 				this.todoList.forEach((e) => {
 					if (e.id === id) {
 						e.done = !e.done
 					}
 				})
 			},
-			deleteTodo(id) {
+			deleteTodo(_, id) {
 				this.todoList = this.todoList.filter(todo => todo.id != id)
 				console.log("deleteTodo", this.todoList)
 			},
-			checkAllTodo(done){
+			checkAllTodo(done) {
 				this.todoList.forEach(e => e.done = done)
 			},
-			clearAllTodo(){
+			clearAllTodo() {
 				this.todoList.forEach(e => e.done = false)
 			}
 		},
@@ -55,8 +56,20 @@
 			todoFooter,
 			todoList
 		},
+		mounted() {
+			// this.$bus.$on('updateTodoDone', this.updateTodoDone)
+			// this.$bus.$on('deleteTodo', this.deleteTodo)
+
+			this.updateTodoDoneId = pubsub.subscribe('updateTodoDone', this.updateTodoDone)
+			this.deleteTodoId = pubsub.subscribe('deleteTodo', this.deleteTodo)
+		},
 		updated() {
 			console.log(this.todoList)
+		},
+		beforeDestroy() {
+			// this.$bus.$off(['updateTodoDone', 'deleteTodo'])
+			pubsub.unsubscribe(this.updateTodoDoneId)
+			pubsub.unsubscribe(this.deleteTodoId)
 		}
 	}
 </script>

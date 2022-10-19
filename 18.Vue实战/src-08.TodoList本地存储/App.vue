@@ -1,8 +1,29 @@
 <template>
+	<!-- 
+		webStorage
+		localStorage和sessionStorage统称为webStorage
+		
+		1、存储内容大小一般支持5M左右 不同浏览器可能不同
+		
+		2、浏览器通过Window.sessionStorage和Window.localStorage属性来实现本地存储
+		
+		3、相关API
+		xxxStorage.setItem(key, value)
+			相当于map的put方法
+		xxxStorage.getItem
+			相当于map的get方法
+		xxxStorage.removeItem
+			相当于map的remove方法
+		xxxStorage.clear
+			相当于list的clear方法
+			
+		4、sessionStorage存储的内容会随着浏览器窗口关闭而消失 localStorage则不会
+		5、如果getItem对应的值获取不到 会返回null
+	 -->
 	<div class="todo-wrap">
-		<todoHeader @addTodo="addTodo"></todoHeader>
+		<todoHeader :addTodo="addTodo"></todoHeader>
 		<todoList :todoList="todoList" :updateTodoDone="updateTodoDone" :deleteTodo="deleteTodo"></todoList>
-		<todoFooter :todoList="todoList" @checkAllTodo="checkAllTodo" @clearAllTodo="clearAllTodo"></todoFooter>
+		<todoFooter :todoList="todoList" :checkAllTodo="checkAllTodo" :clearAllTodo="clearAllTodo"></todoFooter>
 	</div>
 </template>
 
