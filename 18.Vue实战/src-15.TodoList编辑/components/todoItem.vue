@@ -4,7 +4,7 @@
 			<input type="checkbox" :checked="todo.done" @change="updateDone(todo.id)" />
 			<span v-show="!todo.isEdit">{{todo.title}}</span>
 			<input type="text" v-show="todo.isEdit" :value="todo.title" @blur="todoTitleBlur($event, todo)"
-				@keyup.enter="todoTitleBlur($event, todo)" />
+				@keyup.enter="todoTitleBlur($event, todo)" ref="inputTitle" />
 		</label>
 		<button class="btn btn-danger" @click="deleteTodo(todo.id)">删除</button>
 		<button v-show="!todo.isEdit" class="btn btn-edit" @click="updateTodo(todo)">编辑</button>
@@ -36,6 +36,11 @@
 				} else {
 					this.$set(todo, 'isEdit', true)
 				}
+				// 在下一次DOM更新接收后执行其指定的回调
+				// 即在该方法内代码全部执行完并重新解析模板后调用nextTick内的函数
+				this.$nextTick(function() {
+					this.$refs.inputTitle.focus()
+				})
 			},
 			todoTitleBlur(event, todo) {
 				todo.isEdit = false

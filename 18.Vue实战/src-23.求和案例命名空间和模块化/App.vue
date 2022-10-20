@@ -6,16 +6,20 @@
 	 -->
 	<div>
 		<count></count>
+		<hr />
+		<user></user>
 	</div>
 </template>
 
 <script>
 	import count from './components/count'
+	import user from './components/user'
 
 	export default {
 		name: 'App',
 		components: {
-			count
+			count,
+			user
 		},
 		data() {
 			return {

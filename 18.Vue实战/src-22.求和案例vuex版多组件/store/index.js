@@ -36,14 +36,33 @@ const mutations = {
 		// console.log(state, value)
 		state.sum += value
 	},
-	JIAN: function(context, value) {
-		// console.log(context, value)
+	JIAN: function(state, value) {
+		// console.log(state, value)
 		state.sum -= value
+	},
+	ADD_USER: function(state, value) {
+		state.userList.unshift(value)
 	}
 }
 // 准备state用于存储数据
 const state = {
-	sum: 0
+	sum: 0,
+	name: 'flan',
+	weather: '晴',
+	userList: [{
+		id: '001',
+		name: 'ayu'
+	}, {
+		id: '002',
+		name: 'hajiang'
+	}]
+}
+
+// 准备getters用于加工存储数据
+const getters = {
+	updatedSum(state) {
+		return state.sum * 10
+	}
 }
 
 Vue.use(Vuex)
@@ -52,5 +71,6 @@ const store = new Vuex.Store({
 	actions: actions,
 	mutations: mutations,
 	state: state,
+	getters: getters
 })
 export default store
